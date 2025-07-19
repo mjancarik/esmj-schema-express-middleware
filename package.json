@@ -1,6 +1,6 @@
 {
   "name": "@esmj/schema-express-middleware",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Middleware for express that uses @esmj/schema to make requests type-safe.",
   "keywords": [
     "schema",
@@ -81,6 +81,6 @@
   "peerDependencies": {
     "@esmj/schema": "^0.3.2",
     "@types/express": "^4.0.0 || ^5.0.0",
-		"express": "^4.0.0 || ^5.0.0"
+    "express": "^4.0.0 || ^5.0.0"
   }
 }
