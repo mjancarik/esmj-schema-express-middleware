@@ -65,7 +65,7 @@
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@esmj/schema": "^0.3.2",
+    "@esmj/schema": "^0.3.3",
     "@types/express": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
@@ -79,7 +79,7 @@
     "tsup": "^8.5.0"
   },
   "peerDependencies": {
-    "@esmj/schema": "^0.3.2",
+    "@esmj/schema": "^0.3.3",
     "@types/express": "^4.0.0 || ^5.0.0",
     "express": "^4.0.0 || ^5.0.0"
   }
