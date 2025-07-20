@@ -1,3 +1,9 @@
+## 0.1.0 (2025-07-20)
+
+* chore: 🤖 update dependencies ([c9a4de5](https://github.com/mjancarik/esmj-schema-express-middleware/commit/c9a4de5))
+
+
+
 ## <small>0.0.1 (2025-07-19)</small>
 
 * chore: 🤖 clear version ([ecd6711](https://github.com/mjancarik/esmj-schema-express-middleware/commit/ecd6711))
