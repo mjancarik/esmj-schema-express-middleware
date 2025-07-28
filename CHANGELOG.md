@@ -1,3 +1,9 @@
+## <small>0.1.1 (2025-07-28)</small>
+
+* docs: ✏️ fix basic example ([b878102](https://github.com/mjancarik/esmj-schema-express-middleware/commit/b878102))
+
+
+
 ## 0.1.0 (2025-07-20)
 
 * chore: 🤖 update dependencies ([c9a4de5](https://github.com/mjancarik/esmj-schema-express-middleware/commit/c9a4de5))
