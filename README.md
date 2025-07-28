@@ -19,10 +19,15 @@ import { s, validateBody } from '@esmj/schema-express-middleware';
 const app = express();
 app.use(express.json());
 
-const userSchema = s.object({
-  name: s.string().min(1),
-  age: s.number().int().min(0),
-});
+const userSchema = s.object(
+  {
+    name: s.string({ message: 'Name is required' }).refine((value) => value.length > 0, { message: 'Name must not be empty' }),
+    age: s.string({ message: 'Age is required' })
+      .transform((value) => Number.parseInt(value))
+      .pipe(s.number())
+      .refine((value) => Number.isInteger(value) && value >= 0, { message: 'Age must be a non-negative integer' }),
+  },
+);
 
 app.post('/users', validateBody(userSchema), (req, res) => {
   // req.body is now validated and typed
