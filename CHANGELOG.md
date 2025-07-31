@@ -1,3 +1,9 @@
+## 0.2.0 (2025-07-31)
+
+* feat: 🎸 fixing problem with override req.query ([7216f1d](https://github.com/mjancarik/esmj-schema-express-middleware/commit/7216f1d))
+
+
+
 ## <small>0.1.1 (2025-07-28)</small>
 
 * docs: ✏️ fix basic example ([b878102](https://github.com/mjancarik/esmj-schema-express-middleware/commit/b878102))
