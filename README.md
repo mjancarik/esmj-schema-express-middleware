@@ -19,19 +19,17 @@ import { s, validateBody } from '@esmj/schema-express-middleware';
 const app = express();
 app.use(express.json());
 
-const userSchema = s.object(
-  {
-    name: s.string({ message: 'Name is required' }).refine((value) => value.length > 0, { message: 'Name must not be empty' }),
-    age: s.string({ message: 'Age is required' })
-      .transform((value) => Number.parseInt(value))
-      .pipe(s.number())
-      .refine((value) => Number.isInteger(value) && value >= 0, { message: 'Age must be a non-negative integer' }),
-  },
-);
+const userSchema = s.object({
+  name: s.string({ message: 'Name is required' }).refine((value) => value.length > 0, { message: 'Name must not be empty' }),
+  age: s.string({ message: 'Age is required' })
+    .transform((value) => Number.parseInt(value))
+    .pipe(s.number())
+    .refine((value) => Number.isInteger(value) && value >= 0, { message: 'Age must be a non-negative integer' }),
+});
 
 app.post('/users', validateBody(userSchema), (req, res) => {
-  // req.body is now validated and typed
-  res.json({ user: req.body });
+  // req.schema.body is now validated and typed
+  res.json({ user: req.schema.body });
 });
 
 app.listen(3000);
@@ -42,7 +40,7 @@ app.listen(3000);
 ### validate(schemas, errorHandler?)
 
 **Arguments:**
-- `schemas`: `{ body?, query?, params?, headers? }` — An object where each property is an optional [`@esmj/schema` SchemaInterface](https://github.com/mjancarik/esmj-schema). Each provided schema will be used to validate the corresponding part of the request (`req.body`, `req.query`, `req.params`, `req.headers`).
+- `schema`: `{ body?, query?, params?, headers? }` — An object where each property is an optional [`@esmj/schema` SchemaInterface](https://github.com/mjancarik/esmj-schema). Each provided schema will be used to validate the corresponding part of the request (`req.body`, `req.query`, `req.params`, `req.headers`).
 - `errorHandler` (optional): `(opts) => unknown` — A function called on validation error. Receives an object with `{ req, res, next, part, error, result }`.
   - `part`: One of `'body' | 'query' | 'params' | 'headers'` indicating which part failed.
   - `error`: The validation error (with `message` and optional `cause`).
@@ -60,7 +58,7 @@ app.post(
     query: s.object({ next: s.string().optional() }),
   }),
   (req, res) => {
-    // req.body and req.query are validated and typed
+    // req.schema.body and req.schema.query are validated and typed
     res.send('ok');
   }
 );
@@ -130,7 +128,11 @@ app.get('/secure', validateHeaders(s.object({ authorization: s.string() })), han
 
 ## Types
 
-- All helpers are fully typed. After validation, `req.body`, `req.query`, `req.params`, and `req.headers` are typed according to your schema.
+- All helpers are fully typed. After validation, the validated and transformed data is available on the `req.schema` property:
+  - `req.schema.body` — validated request body (if `body` schema provided)
+  - `req.schema.query` — validated query parameters (if `query` schema provided)
+  - `req.schema.params` — validated route parameters (if `params` schema provided)
+  - `req.schema.headers` — validated headers (if `headers` schema provided)
 - All schemas must be @esmj/schema.
 
 ## License

@@ -1,7 +1,17 @@
 import { type Infer, type SchemaInterface, s } from '@esmj/schema';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
+declare module 'express-serve-static-core' {
+  interface Request {
+    schema: {
+      body?: Record<string, unknown>;
+      query?: Record<string, unknown>;
+      params?: Record<string, unknown>;
+      headers?: Record<string, unknown>;
+    };
+  }
+}
 
-export type EsmjSchemaMiddlewareSchemas = {
+export type MiddlewareSchema = {
   body?: SchemaInterface<unknown, unknown>;
   query?: SchemaInterface<unknown, unknown>;
   params?: SchemaInterface<unknown, unknown>;
@@ -12,7 +22,7 @@ export type ErrorHandler = (opts: {
   req: Request;
   res: Response;
   next: NextFunction;
-  part: keyof EsmjSchemaMiddlewareSchemas;
+  part: keyof MiddlewareSchema;
   error:
     | {
         message: string;
@@ -24,16 +34,6 @@ export type ErrorHandler = (opts: {
     error: { message: string; cause?: unknown };
   };
 }) => unknown;
-
-export type EsmjSchemaMiddlewareResult<S extends EsmjSchemaMiddlewareSchemas> =
-  {
-    body: S['body'] extends SchemaInterface<infer I, infer O> ? O : unknown;
-    query: S['query'] extends SchemaInterface<infer I, infer O> ? O : unknown;
-    params: S['params'] extends SchemaInterface<infer I, infer O> ? O : unknown;
-    headers: S['headers'] extends SchemaInterface<infer I, infer O>
-      ? O
-      : unknown;
-  };
 
 function defaultErrorHandler({
   res,
@@ -51,16 +51,20 @@ function defaultErrorHandler({
 }
 
 export function validate(
-  schemas: EsmjSchemaMiddlewareSchemas,
+  schema: MiddlewareSchema,
   errorHandler: ErrorHandler = defaultErrorHandler,
 ): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!req.schema) {
+        req.schema = {};
+      }
+
       for (const part of ['body', 'query', 'params', 'headers'] as const) {
-        if (schemas[part]) {
+        if (schema[part]) {
           try {
-            const result = schemas[part]?.safeParse(req[part]);
-            if (!result.success) {
+            const result = schema[part]?.safeParse(req[part]);
+            if (!result?.success) {
               return errorHandler({
                 req,
                 res,
@@ -70,14 +74,16 @@ export function validate(
                 result,
               });
             }
-            req[part] = result.data;
+
+            (req as { schema: Record<string, unknown> }).schema[part] =
+              result.data;
           } catch (err) {
             return errorHandler({
               req,
               res,
               next,
               part,
-              error: (err as Error) || new Error('Unknown error'),
+              error: err instanceof Error ? err : new Error('Unknown error'),
             });
           }
         }
@@ -117,4 +123,4 @@ export function validateHeaders(
   return validate({ headers: schema }, errorHandler);
 }
 
-export { s, type SchemaInterface, type Infer } from '@esmj/schema';
+export { s, type SchemaInterface, type Infer };
