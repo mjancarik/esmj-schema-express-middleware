@@ -80,7 +80,7 @@
     "tsup": "^8.5.0"
   },
   "peerDependencies": {
-    "@esmj/schema": "^0.3.4",
+    "@esmj/schema": "^0.5.1",
     "@types/express": "^4.0.0 || ^5.0.0",
     "express": "^4.0.0 || ^5.0.0"
   }
