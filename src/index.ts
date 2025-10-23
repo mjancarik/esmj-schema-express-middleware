@@ -1,4 +1,4 @@
-import { type Infer, type SchemaInterface, s } from '@esmj/schema';
+import { type Infer, type SchemaInterface, s } from '@esmj/schema/full';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 declare module 'express-serve-static-core' {
   interface Request {
