@@ -1,6 +1,6 @@
 {
   "name": "@esmj/schema-express-middleware",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Middleware for express that uses @esmj/schema to make requests type-safe.",
   "keywords": [
     "schema",

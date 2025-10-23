@@ -1,3 +1,9 @@
+## 0.4.0 (2025-10-23)
+
+* feat: 🎸 update @esmj/schema lib, add support for full version ([9f3a314](https://github.com/mjancarik/esmj-schema-express-middleware/commit/9f3a314))
+
+
+
 ## 0.3.0 (2025-10-20)
 
 * chore: 🤖 update dependencies ([6f06bce](https://github.com/mjancarik/esmj-schema-express-middleware/commit/6f06bce))
